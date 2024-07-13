@@ -1,4 +1,4 @@
-const { BlobServiceClient } = require("@azure/storage-blob");
+const { BlobServiceClient,generateBlobSASQueryParameters } = require("@azure/storage-blob");
 // const fetch = require("node-fetch");
 require("dotenv").config();
 
@@ -26,29 +26,6 @@ async function main() {
     });
     console.log("Generated SAS URL:", containerSharedURI);
 
-    // Define the blob URL using the SAS URL
-    const blobUrl = `${containerSharedURI}&comp=block&blockid=blockid1&blobtype=BlockBlob`;
-
-    // Define the file content to be uploaded
-    const fileContent = "Hello, Azure Blob Storage!";
-
-    // Use fetch to upload the file to the blob
-    const response = await fetch(blobUrl, {
-      method: "PUT",
-      headers: {
-        "x-ms-blob-type": "BlockBlob",
-        "Content-Type": "text/plain"
-      },
-      body: fileContent
-    });
-
-    if (response.ok) {
-      console.log("File uploaded successfully!");
-    } else {
-      console.error("Failed to upload file:", response.status, response.statusText);
-      const errorText = await response.text();
-      console.error("Error details:", errorText);
-    }
   } catch (err) {
     console.error("Error: ", err.message);
   }
